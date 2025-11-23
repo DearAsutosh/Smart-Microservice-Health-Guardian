@@ -1,0 +1,16 @@
+{
+  "name": "booking-service",
+  "version": "1.0.0",
+  "description": "Dummy booking microservice",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["booking", "microservice"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

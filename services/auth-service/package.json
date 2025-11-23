@@ -1,0 +1,17 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "description": "Dummy authentication microservice",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["auth", "microservice"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.2"
+  }
+}
