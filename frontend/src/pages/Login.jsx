@@ -173,7 +173,7 @@ const Login = () => {
 
                 {/* Footer */}
                 <p className="text-center text-slate-500 text-sm mt-6">
-                    Powered by AI-Enabled Anomaly Detection
+                    Powered by Intelligent Statistical Anomaly Detection
                 </p>
             </div>
         </div>
