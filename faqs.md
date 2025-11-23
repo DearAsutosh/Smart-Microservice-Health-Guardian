@@ -52,6 +52,72 @@ This approach is faster, lighter, and more reliable than black-box AI models.
 
 ---
 
+## 📉 Math & Metrics Explained (Simple Terms)
+
+### 1. Why do we need a 1.5-minute "Learning Phase"?
+Think of this like a runner warming up.
+*   **The Problem:** When you first wake up, you are groggy and slow. If someone measured your sprint speed right when you woke up, they would think you are a terrible runner.
+*   **The Solution:** We give the service **90 seconds (1.5 min)** to "wake up," connect to the database, and load its files.
+*   **Why it makes sense:** If we started alerting immediately, we would get **False Alarms** because the service is naturally slow during startup. We wait for it to "settle down" to find its *true* normal speed.
+
+### 2. Why does latency "boom" (spike) when a service starts?
+This is called a **"Cold Start."**
+*   **Empty Caches:** The service hasn't saved any shortcuts yet, so it has to do the hard work for every request.
+*   **Connection Handshakes:** It has to introduce itself to the database ("Hi, I'm Auth Service, here is my password") which takes time.
+*   **Code Optimization:** Modern languages (like Node.js or Java) actually optimize the code *while* it runs. The first few times a function runs, it's slow. After 100 times, the computer finds a faster way to run it.
+
+### 3. The Dictionary (Simple Terms)
+
+#### **What is Latency?**
+*   **Simple:** **Speed.** (Time to wait).
+*   **Example:** You order a coffee.
+    *   If you get it in 2 minutes, **Latency = 2m**.
+    *   If you get it in 10 minutes, **Latency = 10m**.
+*   *Goal: We want this number to be LOW.*
+
+#### **What is a Baseline?**
+*   **Simple:** **"The Normal."**
+*   **Example:** You usually sleep 8 hours. That is your **baseline**. If you sleep 12 hours one day, that is *abnormal*.
+
+#### **What is a Dynamic Baseline?**
+*   **Simple:** **"The Moving Normal."**
+*   **Scenario:** On weekdays, your baseline sleep is 8 hours. On weekends, your baseline is 10 hours.
+*   **Why we use it:** A "Static" baseline says "Anything over 8 hours is bad!" (which is wrong on weekends). A **Dynamic** baseline learns: "Oh, it's Saturday? 10 hours is fine. No alert needed."
+*   *In our app:* It learns that "50ms is normal for Auth Service" but "200ms is normal for Storage Service."
+
+#### **What is Mean?**
+*   **Simple:** **The Average.**
+*   **Formula:** `(Sum of all numbers) / (Count of numbers)`
+*   *Example:* Latencies are 10, 20, 30. Mean = 20.
+
+#### **What is Standard Deviation (StdDev or σ)?**
+*   **Simple:** **The "Wiggle Room" or "Consistency."**
+*   **Low StdDev:** You run a mile in 6 mins, 6:01, 5:59. (You are consistent).
+*   **High StdDev:** You run a mile in 6 mins, then 10 mins, then 4 mins. (You are chaotic/unstable).
+*   *Why it matters:* If a service usually has **Low StdDev** (very stable) and suddenly spikes, we know something is wrong immediately.
+
+### 4. The Formulas (Simplified)
+
+#### **The Warning Threshold (Yellow Alert 🟡)**
+*   **Concept:** "This is getting weirdly slow."
+*   **Formula:** `Mean + (2.5 × StdDev)`
+*   **English:** Take the Average, add 2.5 times the "Wiggle Room". If the current speed is slower than that, send a Warning.
+
+#### **The Critical Threshold (Red Alert 🔴)**
+*   **Concept:** "Okay, this is definitely broken."
+*   **Formula:** `Mean + (3.5 × StdDev)`
+*   **English:** Take the Average, add 3.5 times the "Wiggle Room". This is extremely far away from normal.
+
+#### **The Z-Score (The "Severity Score")**
+*   **Concept:** How we calculate the color.
+*   **Formula:** `(Current Latency - Mean) / StdDev`
+*   **English:** "How many 'wiggles' away from normal is this request?"
+    *   Score < 2.5 = **Green** (Normal)
+    *   Score > 2.5 = **Yellow** (Warning)
+    *   Score > 3.5 = **Red** (Critical)
+
+---
+
 ## 🏗️ Architecture & Scalability
 
 ### 1. Of those 6 command windows, how many are actual servers?
