@@ -219,4 +219,4 @@ if (percentChange > 15) return 'rising'; // Triggers early warning
 
 ---
 
-*Built with ❤️ for the Hackathon.*
+*Built with ❤️ by [Asutosh 💝](https://github.com/DearAsutosh) for the Hackathon.*
