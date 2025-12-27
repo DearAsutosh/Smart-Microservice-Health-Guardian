@@ -1,6 +1,6 @@
 # Smart Microservice Health Guardian
 
-> **Hackathon-Ready Microservice Monitoring System**  
+> **Microservice Monitoring System**  
 > *Purely Math-Based Anomaly Detection (No AI Models)*
 
 ---
